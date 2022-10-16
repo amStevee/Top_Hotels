@@ -5,15 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import SearchContexProvider from "./context/searchContex";
+import DarkModeContexProvider from "./context/Darkmodecontext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <SearchContexProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </SearchContexProvider>
+    <DarkModeContexProvider>
+      <SearchContexProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SearchContexProvider>
+    </DarkModeContexProvider>
   </React.StrictMode>
 );
 

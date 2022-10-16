@@ -11,9 +11,9 @@ import {
 import { SearchContex } from "../context/searchContex";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { DarkthemeContex } from "../context/Darkmodecontext";
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState(false);
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ export default function Home() {
     dispatch({ type: "NEW_SEARCH", payload: { destination, date, options } });
     navigate("/hotels", { state: { destination, date, options } });
   };
+  const { darkMode, setDarkMode } = useContext(DarkthemeContex);
 
   return (
     <div className={darkMode ? "dark" : ""}>
