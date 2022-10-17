@@ -5,6 +5,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DarkthemeContex } from "../context/Darkmodecontext";
+import Footer from "../components/Footer";
 
 export default function HotelList() {
   const [toggleDate, setToggleDate] = useState(false);
@@ -46,9 +47,15 @@ export default function HotelList() {
   };
 
   return (
-    <div className={darkMode ? "dark bg-dark_bg text-white" : ""}>
+    <div
+      className={
+        darkMode
+          ? "relative dark transition-all ease-in-out delay-150 bg-dark_bg text-white duration-300"
+          : ""
+      }
+    >
       <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
-      {windowWidth < 411 ? (
+      {windowWidth < 813 ? (
         <div className="flex justify-between p-1 m-2 flex-col gap-2 ">
           <form
             onSubmit={refetchLocationList}
@@ -135,13 +142,14 @@ export default function HotelList() {
               <input
                 type="text"
                 name="search"
-                placeholder={destination}
+                placeholder="search location.."
                 onChange={(e) => setDestination(e.target.value)}
                 className="w-4/5 dark:bg-offwhite"
               />
             </form>
 
-            <form className="px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2">
+            <form className="sticky top-40 px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2">
+              <h1 className="text-white text-xl">Search result:</h1>
               <div className="flex flex-col p-1  ">
                 <label htmlFor="location" className="text-icon px-2 py-1">
                   Destination:
@@ -162,7 +170,7 @@ export default function HotelList() {
                 </label>
                 <span
                   onClick={() => setToggleDate(!toggleDate)}
-                  className="text-gray-400 rounded-full p-2 shadow-md bg-white dark:bg-offwhite"
+                  className="text-gray-400 cursor-pointer text-sm rounded-full p-2 shadow-md bg-white dark:bg-offwhite"
                 >
                   {`${format(
                     location.state.date[0].startDate,
@@ -177,7 +185,7 @@ export default function HotelList() {
                     onChange={(item) => setDate([item.selection])}
                     minDate={new Date()}
                     ranges={date}
-                    className="disableDate"
+                    className="absolute inset-x-0 bottom-12 bg-white w-fit h-fit cursor-not-allowed"
                   />
                 )}
               </div>
@@ -188,10 +196,10 @@ export default function HotelList() {
                 </label>
                 <span
                   onClick={() => setToggleOptions(!toggleOptions)}
-                  className="text-gray-400 rounded-full p-2 shadow-md bg-white dark:bg-offwhite"
+                  className="text-gray-400 text-sm cursor-pointer rounded-full p-2 shadow-md bg-white dark:bg-offwhite"
                 >{`${location.state.options.adult} adults  ${location.state.options.children} children  ${location.state.options.room} room`}</span>
                 {toggleOptions && (
-                  <div className="absolute top-14 p-3 flex flex-col justify-center inset-x-0 bg-white">
+                  <div className="absolute bottom-12 w-fit h-fit p-3 flex flex-col justify-center inset-x-0 bg-white">
                     <div className="w-52 flex justify-between m-3">
                       <span className="optionText">Adult</span>
                       <div className="flex gap-3">
@@ -332,9 +340,10 @@ export default function HotelList() {
             </div>
           </section>
 
-          <div className="bg-desktop_ads bg-cover bg-no-repeat bg-center w-36"></div>
+          <div className="bg-desktop_ads bg-cover bg-no-repeat bg-center w-36 sticky top-36 h-96"></div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

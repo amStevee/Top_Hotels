@@ -12,9 +12,11 @@ export default function Navbar({ setDarkMode, darkMode }) {
   const windowWidth = window.innerWidth;
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      setScroll(window.scrollY > 50);
+      setScroll(window.scrollY > 10);
     });
-  });
+  }, []);
+
+  const logo = ["./assets/mobile_logo.png"];
 
   return (
     <div>
@@ -27,7 +29,15 @@ export default function Navbar({ setDarkMode, darkMode }) {
           }
         >
           <div className="flex justify-between">
-            <h3 className="text-2xl">Home</h3>
+            <div className="w-24 m-0 p-0">
+              {logo.map((lg, i) => (
+                <div key={i}>
+                  <Link to="/">
+                    <img src={lg} alt="logo" className="object-contain" />
+                  </Link>
+                </div>
+              ))}
+            </div>
             <button
               className="rounded hover:text-#666 text-xl"
               onClick={() => setDarkMode(!darkMode)}
@@ -37,7 +47,7 @@ export default function Navbar({ setDarkMode, darkMode }) {
 
             {windowWidth < 411 && (
               <button
-                className="rounded hover:text-#666 text-xl"
+                className="rounded hover:text-#666 text-3xl"
                 onClick={() => setToggel(!toggle)}
               >
                 {!toggle ? <AiOutlineMenu /> : <AiFillCloseCircle />}
@@ -46,7 +56,7 @@ export default function Navbar({ setDarkMode, darkMode }) {
           </div>
 
           {toggle && (
-            <ul className="flex flex-col justify-center items-center gap-3 mt-3 text-5xl">
+            <ul className="flex flex-col justify-center items-center gap-3 mt-3">
               <li>
                 <Link to="#">Support</Link>
               </li>
@@ -64,7 +74,15 @@ export default function Navbar({ setDarkMode, darkMode }) {
               : "bg-navbar p-5 flex justify-between lg:flex-row text-white"
           }
         >
-          <img src="./asset/desktop_logo.png" alt="logo" />
+          <div className="w-24 m-0 p-0">
+            {logo.map((lg, i) => (
+              <div key={i}>
+                <Link to="/">
+                  <img src={lg} alt="logo" className="object-contain" />
+                </Link>
+              </div>
+            ))}
+          </div>
 
           <button
             className="rounded hover:text-#666 text-xl"
@@ -73,11 +91,11 @@ export default function Navbar({ setDarkMode, darkMode }) {
             {darkMode ? <MdNightsStay /> : <HiOutlineSun />}
           </button>
 
-          <ul className="flex justify-center items-center gap-3 mt-3">
+          <ul className="flex justify-center items-center gap-5 mt-3 text-2xl">
             <li>
               <Link to="#">Support</Link>
             </li>
-            <li>
+            <li className="bg-white dark:bg-offwhite text-center  rounded-full p-2 pt-1 pb-1 text-xl text-gray-500 hover:bg-transparent hover:text-white">
               <Link to="#">Sign in</Link>
             </li>
           </ul>

@@ -45,23 +45,34 @@ export default function Home() {
     navigate("/hotels", { state: { destination, date, options } });
   };
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);
+  // const windowWidth = window.innerWidth;
+  // const windowHeight = window.innerHeight;
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <header className="bg-mobile_bg bg-cover bg-no-repeat bg-center h-screen md:h-full">
+      <header
+        className={
+          "bg-mobile_bg bg-cover bg-no-repeat bg-center lg:bg-desktop_bg lg:h-screen"
+        }
+      >
         <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
 
-        <section className="px-5 py-10">
-          <h1 className="text-4xl font-black text-white">
-            LOOKING FOR A <br /> HOTEL TO STAY?
-          </h1>
-          <p className="text-white">
-            Search for The Best Hotel <br /> and get results accorrding to{" "}
-            <br /> your taste
-          </p>
+        <section className="px-5 py-10 flex flex-col gap-3 lg:gap-11 lg:px-16">
+          <div>
+            <h1 className="text-4xl font-black text-white lg:text-6xl lg:w-2/4">
+              LOOKING FOR A <br /> HOTEL TO STAY?
+            </h1>
+            <p className="text-offwhite lg:text-3xl lg:w-2/4">
+              Input the location and we'll give you <br />
+              <span className="bg-header_cap bg-opacity-75">
+                The Best Hotel
+              </span>{" "}
+              results accorrding to <br /> your taste.
+            </p>
+          </div>
 
-          <form className="px-5 py-10 flex gap-5 justify-center align-middle flex-col">
-            <div className="flex p-1 bg-white rounded-full h-10">
+          <form className="dark:bg-offwhite px-5 py-10 flex gap-5 justify-center align-middle flex-col lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between">
+            <div className="flex p-1 bg-white rounded-full h-10 lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1">
                 <AiFillEnvironment />
               </label>
@@ -70,18 +81,18 @@ export default function Home() {
                 name="location"
                 id="location"
                 placeholder="Search Location.."
-                className="w-screen rounded-full border-none"
+                className="w-screen rounded-full border-none lg:w-fit lg:bg-transparent"
                 onChange={(e) => setDestination(e.target.value)}
               />
             </div>
 
-            <div className="flex p-1 bg-white rounded-full h-10 relative">
+            <div className="flex p-1 bg-white rounded-full h-10 relative lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1">
                 <AiFillCalendar />
               </label>
               <span
                 onClick={() => setToggleDate(!toggleDate)}
-                className="text-gray-400"
+                className="text-gray-400 cursor-pointer relative"
               >
                 {`${format(date[0].startDate, "dd/MM/yyyy")} to ${format(
                   date[0].endDate,
@@ -94,22 +105,22 @@ export default function Home() {
                   onChange={(item) => setDate([item.selection])}
                   moveRangeOnFirstSelection={false}
                   ranges={date}
-                  className="absolute inset-x-0 top-11 bg-white w-min h-fit"
+                  className="absolute inset-x-0 bottom-12 bg-white w-fit h-fit"
                   minDate={new Date()}
                 />
               )}
             </div>
 
-            <div className="flex p-1 bg-white rounded-full h-10 relative">
+            <div className="flex p-1 bg-white rounded-full h-10 relative lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1">
                 <AiOutlineUserAdd />
               </label>
               <span
                 onClick={() => setToggleOptions(!toggleOptions)}
-                className="text-gray-400"
+                className="text-gray-400 cursor-pointer"
               >{`${options.adult} adults  ${options.children} children  ${options.room} room`}</span>
               {toggleOptions && (
-                <div className="absolute top-14 p-3 flex flex-col justify-center inset-x-0 bg-white">
+                <div className="absolute bottom-14 p-3 flex flex-col justify-center bg-white">
                   <div className="w-52 flex justify-between m-3">
                     <span className="optionText">Adult</span>
                     <div className="flex gap-3">
@@ -186,7 +197,7 @@ export default function Home() {
             </div>
 
             <button
-              className="bg-navbar text-white w-36 m-auto p-2"
+              className="bg-navbar text-white w-36 m-auto p-2 lg:self-end lg:m-1 lg:rounded-full"
               onClick={handleSearch}
             >
               Submit
