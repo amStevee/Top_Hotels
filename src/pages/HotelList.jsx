@@ -2,19 +2,23 @@ import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import Navbar from "../components/Navbar";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DarkthemeContex } from "../context/Darkmodecontext";
 import Footer from "../components/Footer";
 
 export default function HotelList() {
-  const [toggleDate, setToggleDate] = useState(false);
-  const [toggleOptions, setToggleOptions] = useState(false);
-  const { darkMode, setDarkMode } = useContext(DarkthemeContex);
   const location = useLocation();
+  const { darkMode, setDarkMode } = useContext(DarkthemeContex);
   const [destination, setDestination] = useState(location.state.destination);
   const [options, setOptions] = useState(location.state.options);
   const [date, setDate] = useState(location.state.date);
+  const [toggleDate, setToggleDate] = useState(false);
+  const [toggleOptions, setToggleOptions] = useState(false);
+  const [rating, setRating] = useState("");
+  const [price, setPrice] = useState("");
+  const [currency, setCurrency] = useState("");
+  console.log(rating, currency, price);
   const windowWidth = window.innerWidth;
   const refetchLocationList = (e) => {
     e.preventDefault();
@@ -36,6 +40,7 @@ export default function HotelList() {
     "30_000+",
   ];
   const filter_optionRating = ["All", "5.0", "4.0", "3.0", "2.0", "1.0"];
+  const filter_optionCurrency = ["All", "NGA", "USD", "EUP", "JYP", "DTX"];
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -45,6 +50,12 @@ export default function HotelList() {
       };
     });
   };
+  const [scroll, setScroll] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScroll(window.scrollY > 10);
+    });
+  }, []);
 
   return (
     <div
@@ -148,7 +159,13 @@ export default function HotelList() {
               />
             </form>
 
-            <form className="sticky top-40 px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2">
+            <form
+              className={
+                scroll
+                  ? "sticky top-28 px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
+                  : "sticky top-40 px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
+              }
+            >
               <h1 className="text-white text-xl">Search result:</h1>
               <div className="flex flex-col p-1  ">
                 <label htmlFor="location" className="text-icon px-2 py-1">
@@ -293,6 +310,7 @@ export default function HotelList() {
                   <select
                     name="rating"
                     id="rating"
+                    onChange={(e) => setRating(e.target.value)}
                     className="bg-gray-50 rounded dark:text-gray-700 dark:bg-dark_secondary_white"
                   >
                     {filter_optionRating.map((rating, i) => (
@@ -309,10 +327,27 @@ export default function HotelList() {
                     name="price"
                     id="price"
                     className="bg-gray-50 rounded dark:text-gray-700 dark:bg-dark_secondary_white"
+                    onChange={(e) => setPrice(e.target.value)}
                   >
                     {filter_optionPrice.map((price, i) => (
                       <option value={price} className="" key={i}>
                         {price}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="price">Currency: </label>
+                  <select
+                    name="currency"
+                    id="currency"
+                    onChange={(e) => setCurrency(e.target.value)}
+                    className="bg-gray-50 rounded dark:text-gray-700 dark:bg-dark_secondary_white"
+                  >
+                    {filter_optionCurrency.map((currency, i) => (
+                      <option value={currency} className="" key={i}>
+                        {currency}
                       </option>
                     ))}
                   </select>
@@ -340,7 +375,7 @@ export default function HotelList() {
             </div>
           </section>
 
-          <div className="bg-desktop_ads bg-cover bg-no-repeat bg-center w-36 sticky top-36 h-96"></div>
+          <div className="-z-0 bg-desktop_ads bg-cover bg-no-repeat bg-center w-36 sticky top-36 h-96"></div>
         </div>
       )}
       <Footer />

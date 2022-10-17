@@ -19,13 +19,13 @@ export default function Navbar({ setDarkMode, darkMode }) {
   const logo = ["./assets/mobile_logo.png"];
 
   return (
-    <div>
+    <div className="z-50">
       {windowWidth < 411 ? (
         <nav
           className={
             scroll
-              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white z-10"
-              : "bg-navbar p-5 flex justify-between flex-col lg:flex-row text-white"
+              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white z-50"
+              : "bg-navbar p-5 flex justify-between flex-col lg:flex-row text-white z-50"
           }
         >
           <div className="flex justify-between">
@@ -58,7 +58,7 @@ export default function Navbar({ setDarkMode, darkMode }) {
           {toggle && (
             <ul className="flex flex-col justify-center items-center gap-3 mt-3">
               <li>
-                <Link to="#">Support</Link>
+                <Link to="https://twitter.com/am_stevenanongo">Support</Link>
               </li>
               <li>
                 <Link to="#">Sign in</Link>

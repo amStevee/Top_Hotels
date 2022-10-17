@@ -12,11 +12,13 @@ import { SearchContex } from "../context/searchContex";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { DarkthemeContex } from "../context/Darkmodecontext";
+// import { useEffect } from "react";
+// import axios from "axio";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
-  const navigate = useNavigate();
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState([
     {
@@ -39,6 +41,53 @@ export default function Home() {
       };
     });
   };
+
+  console.log(date[0].startDate);
+
+  // useEffect(() => {
+  //   async function getData(params) {
+  //     const options = {
+  //       method: "GET",
+  //       url: "https://hotels4.p.rapidapi.com/locations/v2/search",
+  //       params: { query: `${destination}`, locale: "en_US", currency: "USD" },
+  //       headers: {
+  //         "X-RapidAPI-Key":
+  //           "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+  //         "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+  //       },
+  //     };
+  //     const checkurl = "https://hotels4.p.rapidapi.com/properties/list";
+  //     try {
+  //       //returns hotels in the area with id
+  //       const hotels = await fetch(options.url, options.params, options.headers);
+  //       const data = hotels.json()
+  //       //pass in check-in date etc..
+  //       const checkOptions = await fetch(
+  //         checkurl,
+  //         {
+  //           destinationId: hotels.id,
+  //           pageNumber: "1",
+  //           pageSize: "25",
+  //           checkIn: "2022-04-03",
+  //           checkOut: "2022-04-07",
+  //           adults1: "1",
+  //           sortOrder: "PRICE",
+  //           locale: "en_US",
+  //           currency: "USD",
+  //         },
+  //         {
+  //           "X-RapidAPI-Key":
+  //             "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+  //           "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+  //         }
+  //       );
+
+  //       console.log(hotels);
+  //     } catch (error) {}
+  //   }
+  //   getData();
+  // }, [destination]);
+
   const { dispatch } = useContext(SearchContex);
   const handleSearch = () => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, date, options } });
@@ -50,19 +99,15 @@ export default function Home() {
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <header
-        className={
-          "bg-mobile_bg bg-cover bg-no-repeat bg-center lg:bg-desktop_bg lg:h-screen"
-        }
-      >
+      <header className="bg-mobile_bg bg-cover bg-no-repeat bg-center h-screen lg:bg-desktop_bg lg:h-screen">
         <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
 
-        <section className="px-5 py-10 flex flex-col gap-3 lg:gap-11 lg:px-16">
+        <section className="px-5 py-10 flex flex-col gap-3 md:gap-6 lg:gap-11 lg:px-16">
           <div>
-            <h1 className="text-4xl font-black text-white lg:text-6xl lg:w-2/4">
+            <h1 className="text-4xl font-black text-white lg:text-6xl md:text-4xl ">
               LOOKING FOR A <br /> HOTEL TO STAY?
             </h1>
-            <p className="text-offwhite lg:text-3xl lg:w-2/4">
+            <p className="text-offwhite lg:text-3xl md:text-xl ">
               Input the location and we'll give you <br />
               <span className="bg-header_cap bg-opacity-75">
                 The Best Hotel
@@ -71,17 +116,18 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="dark:bg-offwhite px-5 py-10 flex gap-5 justify-center align-middle flex-col lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between">
+          <form className="dark:bg-offwhite px-5 py-10 flex gap-5  md:gap-3 md:py-1 md:justify-between justify-center align-middle flex-col md:flex-row md:bg-white lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between md:w-auto">
             <div className="flex p-1 bg-white rounded-full h-10 lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1">
                 <AiFillEnvironment />
               </label>
               <input
                 type="text"
+                required
                 name="location"
                 id="location"
                 placeholder="Search Location.."
-                className="w-screen rounded-full border-none lg:w-fit lg:bg-transparent"
+                className="w-screen rounded-full border-none lg:w-fit lg:bg-transparent md:w-auto md:text-sm"
                 onChange={(e) => setDestination(e.target.value)}
               />
             </div>
@@ -92,7 +138,7 @@ export default function Home() {
               </label>
               <span
                 onClick={() => setToggleDate(!toggleDate)}
-                className="text-gray-400 cursor-pointer relative"
+                className="text-gray-400 cursor-pointer relative md:text-xs md:pt-1 lg:text-sm"
               >
                 {`${format(date[0].startDate, "dd/MM/yyyy")} to ${format(
                   date[0].endDate,
@@ -117,7 +163,7 @@ export default function Home() {
               </label>
               <span
                 onClick={() => setToggleOptions(!toggleOptions)}
-                className="text-gray-400 cursor-pointer"
+                className="text-gray-400 cursor-pointer md:text-xs md:pt-1 lg:text-sm"
               >{`${options.adult} adults  ${options.children} children  ${options.room} room`}</span>
               {toggleOptions && (
                 <div className="absolute bottom-14 p-3 flex flex-col justify-center bg-white">
@@ -197,7 +243,7 @@ export default function Home() {
             </div>
 
             <button
-              className="bg-navbar text-white w-36 m-auto p-2 lg:self-end lg:m-1 lg:rounded-full"
+              className="bg-navbar text-white w-36 m-auto p-2 lg:self-end lg:m-1 lg:rounded-full md:rounded-full md:self-end md:m-0"
               onClick={handleSearch}
             >
               Submit
