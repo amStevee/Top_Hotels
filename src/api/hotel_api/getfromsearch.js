@@ -17,7 +17,7 @@ const options = {
     currency: "USD",
   },
   headers: {
-    "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+    "X-RapidAPI-Key": `${process.env.API_KEY}`,
     "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
   },
 };

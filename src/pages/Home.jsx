@@ -42,60 +42,12 @@ export default function Home() {
     });
   };
 
-  console.log(date[0].startDate);
-
-  // useEffect(() => {
-  //   async function getData(params) {
-  //     const options = {
-  //       method: "GET",
-  //       url: "https://hotels4.p.rapidapi.com/locations/v2/search",
-  //       params: { query: `${destination}`, locale: "en_US", currency: "USD" },
-  //       headers: {
-  //         "X-RapidAPI-Key":
-  //           "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
-  //         "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-  //       },
-  //     };
-  //     const checkurl = "https://hotels4.p.rapidapi.com/properties/list";
-  //     try {
-  //       //returns hotels in the area with id
-  //       const hotels = await fetch(options.url, options.params, options.headers);
-  //       const data = hotels.json()
-  //       //pass in check-in date etc..
-  //       const checkOptions = await fetch(
-  //         checkurl,
-  //         {
-  //           destinationId: hotels.id,
-  //           pageNumber: "1",
-  //           pageSize: "25",
-  //           checkIn: "2022-04-03",
-  //           checkOut: "2022-04-07",
-  //           adults1: "1",
-  //           sortOrder: "PRICE",
-  //           locale: "en_US",
-  //           currency: "USD",
-  //         },
-  //         {
-  //           "X-RapidAPI-Key":
-  //             "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
-  //           "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-  //         }
-  //       );
-
-  //       console.log(hotels);
-  //     } catch (error) {}
-  //   }
-  //   getData();
-  // }, [destination]);
-
   const { dispatch } = useContext(SearchContex);
   const handleSearch = () => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, date, options } });
     navigate("/hotels", { state: { destination, date, options } });
   };
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);
-  // const windowWidth = window.innerWidth;
-  // const windowHeight = window.innerHeight;
 
   return (
     <div className={darkMode ? "dark" : ""}>

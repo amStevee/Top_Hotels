@@ -24,8 +24,8 @@ export default function Navbar({ setDarkMode, darkMode }) {
         <nav
           className={
             scroll
-              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white z-50"
-              : "bg-navbar p-5 flex justify-between flex-col lg:flex-row text-white z-50"
+              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white z-50 dark:bg-navdark"
+              : "bg-navbar p-5 flex justify-between flex-col lg:flex-row text-white z-50 dark:bg-navdark"
           }
         >
           <div className="flex justify-between">
@@ -70,8 +70,8 @@ export default function Navbar({ setDarkMode, darkMode }) {
         <nav
           className={
             scroll
-              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white"
-              : "bg-navbar p-5 flex justify-between lg:flex-row text-white"
+              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white dark:bg-navdark"
+              : "bg-navbar p-5 flex justify-between lg:flex-row text-white dark:bg-navdark"
           }
         >
           <div className="w-24 m-0 p-0">

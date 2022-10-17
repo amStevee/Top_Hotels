@@ -18,6 +18,10 @@ export default function HotelList() {
   const [rating, setRating] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("");
+  // //the api may require you to setup the date formart differently ensure to check before proceeding
+  // const check_in = `${format(date[0].startDate, "dd/MM/yyyy")} `;
+  // const check_out = `${format(date[0].endDate, "dd/MM/yyyy")} `;
+  // console.log(check_out, check_in);
   console.log(rating, currency, price);
   const windowWidth = window.innerWidth;
   const refetchLocationList = (e) => {
@@ -84,14 +88,15 @@ export default function HotelList() {
             />
           </form>
 
-          <div className="flex flex-col text-sm items-center gap-1">
+          <div className="flex flex-col text-sm justify-center items-center gap-1">
             <h6 className="text-navbar dark:text-icon">Filter by:</h6>
-            <form className="flex gap-4">
+            <form className="flex gap-3 justify-center items-center">
               <div>
                 <label htmlFor="rating">Rating: </label>
                 <select
                   name="rating"
                   id="rating"
+                  onChange={(e) => setRating(e.target.value)}
                   className="bg-gray-50 rounded dark:text-gray-700 dark:bg-dark_secondary_white"
                 >
                   {filter_optionRating.map((rating, i) => (
@@ -107,6 +112,7 @@ export default function HotelList() {
                 <select
                   name="price"
                   id="price"
+                  onChange={(e) => setPrice(e.target.value)}
                   className="bg-gray-50 rounded dark:text-gray-700 dark:bg-dark_secondary_white"
                 >
                   {filter_optionPrice.map((price, i) => (
@@ -116,12 +122,28 @@ export default function HotelList() {
                   ))}
                 </select>
               </div>
+
+              <div>
+                <label htmlFor="price">Currency: </label>
+                <select
+                  name="currency"
+                  id="currency"
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="bg-gray-50 rounded dark:text-gray-700 dark:bg-dark_secondary_white"
+                >
+                  {filter_optionCurrency.map((currency, i) => (
+                    <option value={currency} className="" key={i}>
+                      {currency}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </form>
           </div>
 
-          <div className="bg-mobile_ads bg-cover bg-no-repeat bg-center h-10"></div>
+          <div className="bg-mobile_ads bg-cover bg-no-repeat bg-center h-10 dark:bg-mobile_ads_dark"></div>
 
-          <div className="shadow-xl dark:shadow-xl rounded-xl m-2 h-40 flex dark:bg-alt_dark_bg">
+          <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-gray-600">
             <div className="flex overflow-auto snap-mandatory snap-x w-36">
               {photo.map((pht, i) => (
                 <div key={i} className="shrink-0">
@@ -131,7 +153,7 @@ export default function HotelList() {
             </div>
             <div className="p-2">
               <h2 className="text-icon mb-2">GRAND IBRO HOTEL</h2>
-              <p className="text-xs mb-1 text-gray-500 dark:text-dark_secondary_white">
+              <p className="text-xs mb-1 text-gray-500 dark:text-white">
                 Rated: 3 out of 100
               </p>
               <p className="text-xs">
