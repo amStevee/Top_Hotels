@@ -71,7 +71,7 @@ export default function HotelList() {
     >
       <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
       {windowWidth < 813 ? (
-        <div className="flex justify-between p-1 m-2 flex-col gap-2 ">
+        <div className="flex justify-between p-1 m-3 flex-col gap-2">
           <form
             onSubmit={refetchLocationList}
             className="flex gap-2 rounded-full p-2 shadow-md bg-white dark:text-black dark:bg-offwhite"
@@ -141,7 +141,7 @@ export default function HotelList() {
             </form>
           </div>
 
-          <div className="bg-mobile_ads bg-cover bg-no-repeat bg-center h-10 dark:bg-mobile_ads_dark"></div>
+          <div className="bg-mobile_ads bg-cover bg-no-repeat bg-center h-12 dark:bg-mobile_ads_dark"></div>
 
           <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-gray-600">
             <div className="flex overflow-auto snap-mandatory snap-x w-36">
@@ -184,8 +184,8 @@ export default function HotelList() {
             <form
               className={
                 scroll
-                  ? "sticky top-28 px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
-                  : "sticky top-40 px-5 py-10 flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
+                  ? "sticky top-28 px-5 py-10 dark:bg-gradient-to-br dark:from-navdark dark:to-navbar flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
+                  : "sticky top-40 px-5 py-10 dark:bg-gradient-to-br dark:from-navdark dark:to-navbar flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
               }
             >
               <h1 className="text-white text-xl">Search result:</h1>
@@ -231,7 +231,7 @@ export default function HotelList() {
 
               <div className="flex flex-col p-1 relative ">
                 <label htmlFor="location" className="text-icon px-2 py-1">
-                  Options:
+                  Travellers:
                 </label>
                 <span
                   onClick={() => setToggleOptions(!toggleOptions)}
@@ -387,10 +387,17 @@ export default function HotelList() {
                   ))}
                 </div>
                 <div className="p-2">
-                  <h1 className="text-icon text-lg mb-2">GRAND IBRO HOTEL</h1>
-                  <p className="mb-1 text-gray-500">Rated: 3 out of 100</p>
-                  <p className="">
-                    Address: <br /> No.25 Grand ibro street, wuse zone 5, Abuja
+                  <h1 className="text-icon text-lg font-roboto_black">
+                    GRAND IBRO HOTEL
+                  </h1>
+                  <span className="text-xs mb-2 text-gray-500">
+                    wuse zone 5
+                  </span>
+                  <p className="mb-1 text-gray-500 font-Livvic_light">
+                    Rated: 3 out of 100
+                  </p>
+                  <p className="font-Livvic">
+                    Address: <br /> Ring Road 4, Aviation Village
                   </p>
                 </div>
               </div>

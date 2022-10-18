@@ -55,22 +55,22 @@ export default function Home() {
         <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
 
         <section className="px-5 py-10 flex flex-col gap-3 md:gap-6 lg:gap-11 lg:px-16">
-          <div>
+          <div className="flex flex-col gap-3">
             <h1 className="text-4xl font-black text-white lg:text-6xl md:text-4xl ">
               LOOKING FOR A <br /> HOTEL TO STAY?
             </h1>
-            <p className="text-offwhite lg:text-3xl md:text-xl ">
+            <p className="text-offwhite font-Livvic lg:text-3xl md:text-xl ">
               Input the location and we'll give you <br />
               <span className="bg-header_cap bg-opacity-75">
-                The Best Hotel
+                The Best Hotel results accorrding to
               </span>{" "}
-              results accorrding to <br /> your taste.
+              <br /> your taste.
             </p>
           </div>
 
           <form className="dark:bg-offwhite px-5 py-10 flex gap-5  md:gap-3 md:py-1 md:justify-between justify-center align-middle flex-col md:flex-row md:bg-white lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between md:w-auto">
             <div className="flex p-1 bg-white rounded-full h-10 lg:bg-transparent">
-              <label htmlFor="location" className="text-icon px-2 py-1">
+              <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiFillEnvironment />
               </label>
               <input
@@ -79,18 +79,18 @@ export default function Home() {
                 name="location"
                 id="location"
                 placeholder="Search Location.."
-                className="w-screen rounded-full border-none lg:w-fit lg:bg-transparent md:w-auto md:text-sm"
+                className="w-screen rounded-full border-none lg:w-fit lg:bg-transparent md:w-auto md:text-sm placeholder:text-xl"
                 onChange={(e) => setDestination(e.target.value)}
               />
             </div>
 
             <div className="flex p-1 bg-white rounded-full h-10 relative lg:bg-transparent">
-              <label htmlFor="location" className="text-icon px-2 py-1">
+              <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiFillCalendar />
               </label>
               <span
                 onClick={() => setToggleDate(!toggleDate)}
-                className="text-gray-400 cursor-pointer relative md:text-xs md:pt-1 lg:text-sm"
+                className="text-gray-400 cursor-pointer relative md:text-xs md:pt-1 lg:text-lg"
               >
                 {`${format(date[0].startDate, "dd/MM/yyyy")} to ${format(
                   date[0].endDate,
@@ -110,12 +110,12 @@ export default function Home() {
             </div>
 
             <div className="flex p-1 bg-white rounded-full h-10 relative lg:bg-transparent">
-              <label htmlFor="location" className="text-icon px-2 py-1">
+              <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiOutlineUserAdd />
               </label>
               <span
                 onClick={() => setToggleOptions(!toggleOptions)}
-                className="text-gray-400 cursor-pointer md:text-xs md:pt-1 lg:text-sm"
+                className="text-gray-400 cursor-pointer md:text-xs md:pt-1 lg:text-lg"
               >{`${options.adult} adults  ${options.children} children  ${options.room} room`}</span>
               {toggleOptions && (
                 <div className="absolute bottom-14 p-3 flex flex-col justify-center bg-white">

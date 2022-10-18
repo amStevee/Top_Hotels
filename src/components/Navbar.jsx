@@ -20,11 +20,11 @@ export default function Navbar({ setDarkMode, darkMode }) {
 
   return (
     <div className="z-50">
-      {windowWidth < 411 ? (
+      {windowWidth < 415 ? (
         <nav
           className={
             scroll
-              ? "fixed top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white z-50 dark:bg-navdark"
+              ? "absolute top-0 left-0 right-0 bg-navbar p-5 flex justify-between lg:flex-row text-white z-50 dark:bg-navdark"
               : "bg-navbar p-5 flex justify-between flex-col lg:flex-row text-white z-50 dark:bg-navdark"
           }
         >
@@ -45,7 +45,7 @@ export default function Navbar({ setDarkMode, darkMode }) {
               {darkMode ? <MdNightsStay /> : <HiOutlineSun />}
             </button>
 
-            {windowWidth < 411 && (
+            {windowWidth < 415 && (
               <button
                 className="rounded hover:text-#666 text-3xl"
                 onClick={() => setToggel(!toggle)}
@@ -91,7 +91,7 @@ export default function Navbar({ setDarkMode, darkMode }) {
             {darkMode ? <MdNightsStay /> : <HiOutlineSun />}
           </button>
 
-          <ul className="flex justify-center items-center gap-5 mt-3 text-2xl">
+          <ul className="flex justify-center items-center gap-5 mt-3 text-2xl font-Livvic">
             <li>
               <Link to="#">Support</Link>
             </li>

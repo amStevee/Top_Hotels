@@ -29,6 +29,11 @@ module.exports = {
         list_btn: "#E5DED8",
         header_cap: "#d92b04",
       },
+      fontFamily: {
+        roboto_black: ["ROBOTO", "sans-serif"],
+        Livvic: ["LIVVIC", "sans"],
+        Livvic_light: ["LIVVIC_LIGHT", "sans"],
+      },
     },
   },
   plugins: [],
