@@ -143,7 +143,7 @@ export default function HotelList() {
 
           <div className="bg-mobile_ads bg-cover bg-no-repeat bg-center h-12 dark:bg-mobile_ads_dark"></div>
 
-          <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-gray-600">
+          <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-offwhite dark:text-black">
             <div className="flex overflow-auto snap-mandatory snap-x w-36">
               {photo.map((pht, i) => (
                 <div key={i} className="shrink-0">
@@ -152,12 +152,15 @@ export default function HotelList() {
               ))}
             </div>
             <div className="p-2">
-              <h2 className="text-icon mb-2">GRAND IBRO HOTEL</h2>
-              <p className="text-xs mb-1 text-gray-500 dark:text-white">
+              <h1 className="text-icon text-lg font-roboto_black">
+                GRAND IBRO HOTEL
+              </h1>
+              <span className="text-xs mb-2 text-gray-500">wuse zone 5</span>
+              <p className="mb-1 text-gray-500 font-Livvic_light text-sm">
                 Rated: 3 out of 100
               </p>
-              <p className="text-xs">
-                No.25 Grand ibro street, wuse zone 5, Abuja
+              <p className="font-Livvic text-xs">
+                Address: <br /> Ring Road 4, Aviation Village
               </p>
             </div>
           </div>
@@ -323,7 +326,7 @@ export default function HotelList() {
             </form>
           </section>
 
-          <section className="flex flex-col flex-auto gap-6">
+          <section className="flex flex-col flex-auto gap-4">
             <div className=" shadow-sm flex flex-col text-sm items-center gap-1">
               <h6 className="text-navbar dark:text-icon">Filter by:</h6>
               <form className="flex gap-4">
@@ -375,10 +378,11 @@ export default function HotelList() {
                   </select>
                 </div>
               </form>
+              <h6>452 results</h6>
             </div>
 
             <div className="flex justify-center items-center">
-              <div className="shadow-xl dark:shadow-xl w-10/12 m-2 h-64 flex dark:bg-offwhite dark:text-black">
+              <div className="shadow-xl dark:shadow-xl w-full m-2 h-64 flex dark:bg-offwhite dark:text-black">
                 <div className="flex overflow-auto snap-mandatory snap-x w-64 ">
                   {photo.map((pht, i) => (
                     <div key={i} className="shrink-0">

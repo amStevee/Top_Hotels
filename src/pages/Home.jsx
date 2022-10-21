@@ -68,7 +68,7 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="dark:bg-offwhite px-5 py-10 flex gap-5  md:gap-3 md:py-1 md:justify-between justify-center align-middle flex-col md:flex-row md:bg-white lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between md:w-auto">
+          <form className="dark:bg-black bg-opacity-95 px-5 py-10 flex gap-5  md:gap-3 md:py-1 md:justify-between justify-center align-middle flex-col md:flex-row md:bg-white lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between md:w-auto">
             <div className="flex p-1 bg-white rounded-full h-10 lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiFillEnvironment />
