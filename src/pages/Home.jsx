@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { SearchContex } from "../context/searchContex";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar.tsx";
 import { DarkthemeContex } from "../context/Darkmodecontext";
 // import { useEffect } from "react";
 // import axios from "axio";

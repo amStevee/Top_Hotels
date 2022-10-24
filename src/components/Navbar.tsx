@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { AiOutlineMenu, AiFillCloseCircle } from "react-icons/ai";
 import { MdNightsStay } from "react-icons/md";
@@ -7,8 +8,8 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function Navbar({ setDarkMode, darkMode }) {
-  const [toggle, setToggel] = useState(false);
-  const [scroll, setScroll] = useState(false);
+  const [toggle, setToggel] = useState<boolean>(false);
+  const [scroll, setScroll] = useState<boolean>(false);
   const windowWidth = window.innerWidth;
   useEffect(() => {
     window.addEventListener("scroll", () => {

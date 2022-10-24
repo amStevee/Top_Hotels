@@ -1,11 +1,11 @@
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar.tsx";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { DarkthemeContex } from "../context/Darkmodecontext";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer.tsx";
 
 export default function HotelList() {
   const location = useLocation();
