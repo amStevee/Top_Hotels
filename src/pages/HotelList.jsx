@@ -1,11 +1,13 @@
+import React from "react";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { DarkthemeContex } from "../context/Darkmodecontext";
+import { DarkthemeContex } from "../context/Darkmodecontext.tsx";
 import Navbar from "../components/Navbar.tsx";
 import Footer from "../components/Footer.tsx";
+import Loading from "../reusableComponents/Loading.tsx";
 
 export default function HotelList() {
   const location = useLocation();
@@ -13,6 +15,7 @@ export default function HotelList() {
   const [destination, setDestination] = useState(location.state.destination);
   const [options, setOptions] = useState(location.state.options);
   const [date, setDate] = useState(location.state.date);
+  const [data, setData] = useState(location.state.responseData);
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
   const [rating, setRating] = useState("");
@@ -65,8 +68,8 @@ export default function HotelList() {
     <div
       className={
         darkMode
-          ? "relative dark transition-all ease-in-out delay-150 bg-dark_bg text-white duration-300"
-          : ""
+          ? "relative dark transition-all ease-in-out delay-150 bg-dark_bg text-white duration-300 h-screen"
+          : " h-screen"
       }
     >
       <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
@@ -90,7 +93,7 @@ export default function HotelList() {
 
           <div className="flex flex-col text-sm justify-center items-center gap-1">
             <h6 className="text-navbar dark:text-icon">Filter by:</h6>
-            <form className="flex gap-3 justify-center items-center">
+            <form className="flex gap-3 justify-center items-center mx-4">
               <div>
                 <label htmlFor="rating">Rating: </label>
                 <select
@@ -141,7 +144,7 @@ export default function HotelList() {
             </form>
           </div>
 
-          <div className="bg-mobile_ads bg-cover bg-no-repeat bg-center h-12 dark:bg-mobile_ads_dark"></div>
+          <div className="bg-mobile_ads bg-no-repeat bg-contain bg-center h-12 dark:bg-mobile_ads_dark"></div>
 
           <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-offwhite dark:text-black">
             <div className="flex overflow-auto snap-mandatory snap-x w-36">
@@ -386,7 +389,12 @@ export default function HotelList() {
                 <div className="flex overflow-auto snap-mandatory snap-x w-64 ">
                   {photo.map((pht, i) => (
                     <div key={i} className="shrink-0">
-                      <img src={pht} alt="hotel" className="w-full h-full" />
+                      <img
+                        src={pht}
+                        alt="hotel"
+                        className="w-full h-full"
+                        loading="lazy"
+                      />
                     </div>
                   ))}
                 </div>
@@ -406,6 +414,8 @@ export default function HotelList() {
                 </div>
               </div>
             </div>
+
+            <Loading />
           </section>
 
           <div className="-z-0 bg-desktop_ads bg-cover bg-no-repeat bg-center w-36 sticky top-36 h-96"></div>

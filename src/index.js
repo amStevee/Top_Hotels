@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import SearchContexProvider from "./context/searchContex";
-import DarkModeContexProvider from "./context/Darkmodecontext";
+import DarkModeContexProvider from "./context/Darkmodecontext.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

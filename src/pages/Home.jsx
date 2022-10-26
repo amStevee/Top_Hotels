@@ -1,3 +1,4 @@
+import React from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
@@ -11,9 +12,7 @@ import {
 import { SearchContex } from "../context/searchContex";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.tsx";
-import { DarkthemeContex } from "../context/Darkmodecontext";
-// import { useEffect } from "react";
-// import axios from "axio";
+import { DarkthemeContex } from "../context/Darkmodecontext.tsx";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -45,7 +44,9 @@ export default function Home() {
   const { dispatch } = useContext(SearchContex);
   const handleSearch = () => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, date, options } });
-    navigate("/hotels", { state: { destination, date, options } });
+    navigate("/hotels", {
+      state: { destination, date, options },
+    });
   };
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);
 
@@ -68,8 +69,8 @@ export default function Home() {
             </p>
           </div>
 
-          <form className="dark:bg-black bg-opacity-95 px-5 py-10 flex gap-5  md:gap-3 md:py-1 md:justify-between justify-center align-middle flex-col md:flex-row md:bg-white lg:flex-row lg:bg-white rounded-full lg:p-1 lg:justify-between md:w-auto">
-            <div className="flex p-1 bg-white rounded-full h-10 lg:bg-transparent">
+          <form className="lg:dark:bg-black md:dark:bg-black h-auto bg-opacity-95 px-5 md:px-1 py-10 flex gap-5  md:gap-3 md:py-1 md:justify-between justify-center align-middle flex-col md:flex-row md:bg-white lg:flex-row lg:bg-offwhite rounded-full lg:p-1 lg:justify-between md:w-auto">
+            <div className="flex p-1 bg-offwhite md:bg-inherit rounded-full h-10 lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiFillEnvironment />
               </label>
@@ -79,12 +80,12 @@ export default function Home() {
                 name="location"
                 id="location"
                 placeholder="Search Location.."
-                className="w-screen rounded-full border-none lg:w-fit lg:bg-transparent md:w-auto md:text-sm placeholder:text-xl"
+                className="w-screen rounded-full border-none bg-offwhite md:bg-inherit lg:w-fit lg:bg-transparent md:w-auto md:text-sm placeholder:text-xl dark:text-white"
                 onChange={(e) => setDestination(e.target.value)}
               />
             </div>
 
-            <div className="flex p-1 bg-white rounded-full h-10 relative lg:bg-transparent">
+            <div className="flex p-1 bg-offwhite md:bg-inherit rounded-full h-10 relative lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiFillCalendar />
               </label>
@@ -109,7 +110,7 @@ export default function Home() {
               )}
             </div>
 
-            <div className="flex p-1 bg-white rounded-full h-10 relative lg:bg-transparent">
+            <div className="flex p-1 bg-offwhite md:bg-inherit rounded-full h-10 relative lg:bg-transparent">
               <label htmlFor="location" className="text-icon px-2 py-1 text-xl">
                 <AiOutlineUserAdd />
               </label>
@@ -195,7 +196,7 @@ export default function Home() {
             </div>
 
             <button
-              className="bg-navbar text-white w-36 m-auto p-2 lg:self-end lg:m-1 lg:rounded-full md:rounded-full md:self-end md:m-0"
+              className="bg-navbar text-white w-36 m-auto p-2 lg:self-end  lg:rounded-full md:rounded-full md:self-end md:m-0"
               onClick={handleSearch}
             >
               Submit
