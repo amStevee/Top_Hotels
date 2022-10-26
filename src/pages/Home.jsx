@@ -13,6 +13,7 @@ import { SearchContex } from "../context/searchContex";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.tsx";
 import { DarkthemeContex } from "../context/Darkmodecontext.tsx";
+import { useSearchLocation } from "../hooks/useApiquery";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -31,6 +32,22 @@ export default function Home() {
     children: 0,
     room: 1,
   });
+  const search_options = {
+    method: "GET",
+    url: "https://hotels4.p.rapidapi.com/locations/v3/search",
+    params: {
+      q: destination,
+      locale: "en_US",
+      langid: "1033",
+      siteid: "300000001",
+    },
+    headers: {
+      "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+    },
+  };
+  const { data } = useSearchLocation(search_options);
+  const result = data?.data;
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -45,7 +62,7 @@ export default function Home() {
   const handleSearch = () => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, date, options } });
     navigate("/hotels", {
-      state: { destination, date, options },
+      state: { destination, date, options, result },
     });
   };
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);

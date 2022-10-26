@@ -8,6 +8,7 @@ import { DarkthemeContex } from "../context/Darkmodecontext.tsx";
 import Navbar from "../components/Navbar.tsx";
 import Footer from "../components/Footer.tsx";
 import Loading from "../reusableComponents/Loading.tsx";
+import { useProperties } from "../hooks/useApiquery";
 
 export default function HotelList() {
   const location = useLocation();
@@ -15,20 +16,47 @@ export default function HotelList() {
   const [destination, setDestination] = useState(location.state.destination);
   const [options, setOptions] = useState(location.state.options);
   const [date, setDate] = useState(location.state.date);
-  const [data, setData] = useState(location.state.responseData);
+  const [result, setResult] = useState(location.state.result);
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
   const [rating, setRating] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("");
+  const [Pagenumber, setPagenumber] = useState(1);
+  console.log(Pagenumber);
   // //the api may require you to setup the date formart differently ensure to check before proceeding
-  // const check_in = `${format(date[0].startDate, "dd/MM/yyyy")} `;
-  // const check_out = `${format(date[0].endDate, "dd/MM/yyyy")} `;
-  // console.log(check_out, check_in);
+  const check_in = `${format(date[0].startDate, "dd/MM/yyyy")} `;
+  const check_out = `${format(date[0].endDate, "dd/MM/yyyy")} `;
   console.log(rating, currency, price);
+
+  const properties_options = {
+    method: "GET",
+    url: "https://hotels4.p.rapidapi.com/properties/list",
+    params: {
+      destinationId: result?.rid,
+      pageNumber: Pagenumber,
+      pageSize: "25",
+      checkIn: check_in,
+      checkOut: check_out,
+      adults1: options?.adult,
+      sortOrder: "PRICE",
+      locale: "en_US",
+      currency: currency,
+    },
+    headers: {
+      "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+    },
+  };
+
+  const { data, isLoading, isFetching, refetch } =
+    useProperties(properties_options);
+  console.log(data);
+
   const windowWidth = window.innerWidth;
   const refetchLocationList = (e) => {
     e.preventDefault();
+    refetch();
   };
 
   const photo = [
@@ -63,6 +91,8 @@ export default function HotelList() {
       setScroll(window.scrollY > 10);
     });
   }, []);
+
+  const pagination = [1, 2, 3, 4, 5];
 
   return (
     <div
@@ -146,47 +176,47 @@ export default function HotelList() {
 
           <div className="bg-mobile_ads bg-no-repeat bg-contain bg-center h-12 dark:bg-mobile_ads_dark"></div>
 
-          <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-offwhite dark:text-black">
-            <div className="flex overflow-auto snap-mandatory snap-x w-36">
-              {photo.map((pht, i) => (
-                <div key={i} className="shrink-0">
-                  <img src={pht} alt="hotel" className="w-full h-full" />
-                </div>
-              ))}
+          {isLoading || isFetching ? (
+            <Loading />
+          ) : (
+            <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-offwhite dark:text-black">
+              <div className="flex overflow-auto snap-mandatory snap-x w-36">
+                {photo.map((pht, i) => (
+                  <div key={i} className="shrink-0">
+                    <img src={pht} alt="hotel" className="w-full h-full" />
+                  </div>
+                ))}
+              </div>
+              <div className="p-2">
+                <h1 className="text-icon text-lg font-roboto_black">
+                  GRAND IBRO HOTEL
+                </h1>
+                <span className="text-xs mb-2 text-gray-500">
+                  City: Hayes, England, United Kingdom
+                </span>
+                <p className="mb-1 text-gray-500 font-Livvic_light text-sm">
+                  Rated: 3 out of 100
+                </p>
+                <p className="font-Livvic text-xs">
+                  Address: <br /> Bath Road, Hayes England
+                </p>
+                <p className="mb-1 text-gray-500 font-Livvic_light text-sm">
+                  Currency: GBR
+                </p>
+              </div>
             </div>
-            <div className="p-2">
-              <h1 className="text-icon text-lg font-roboto_black">
-                GRAND IBRO HOTEL
-              </h1>
-              <span className="text-xs mb-2 text-gray-500">wuse zone 5</span>
-              <p className="mb-1 text-gray-500 font-Livvic_light text-sm">
-                Rated: 3 out of 100
-              </p>
-              <p className="font-Livvic text-xs">
-                Address: <br /> Ring Road 4, Aviation Village
-              </p>
-            </div>
+          )}
+          <div className="pagination flex gap-3 justify-center items-center">
+            {pagination.map((pagenum, i) => (
+              <div key={i} className="bg-black text-white p-2 cursor-pointer">
+                <h4 onClick={(e) => setPagenumber(pagenum)}>{pagenum}</h4>
+              </div>
+            ))}
           </div>
         </div>
       ) : (
         <div className="flex justify-between p-2 m-3">
           <section className="w-72 flex flex-col gap-4">
-            <form
-              onSubmit={refetchLocationList}
-              className="flex gap-2 rounded-full p-2 shadow-md bg-white dark:text-black dark:bg-offwhite"
-            >
-              <button type="submit">
-                <AiOutlineSearch />
-              </button>{" "}
-              <input
-                type="text"
-                name="search"
-                placeholder="search location.."
-                onChange={(e) => setDestination(e.target.value)}
-                className="w-4/5 dark:bg-offwhite"
-              />
-            </form>
-
             <form
               className={
                 scroll
@@ -381,41 +411,53 @@ export default function HotelList() {
                   </select>
                 </div>
               </form>
-              <h6>452 results</h6>
+              <h6>2821 results</h6>
             </div>
 
-            <div className="flex justify-center items-center">
-              <div className="shadow-xl dark:shadow-xl w-full m-2 h-64 flex dark:bg-offwhite dark:text-black">
-                <div className="flex overflow-auto snap-mandatory snap-x w-64 ">
-                  {photo.map((pht, i) => (
-                    <div key={i} className="shrink-0">
-                      <img
-                        src={pht}
-                        alt="hotel"
-                        className="w-full h-full"
-                        loading="lazy"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="p-2">
-                  <h1 className="text-icon text-lg font-roboto_black">
-                    GRAND IBRO HOTEL
-                  </h1>
-                  <span className="text-xs mb-2 text-gray-500">
-                    wuse zone 5
-                  </span>
-                  <p className="mb-1 text-gray-500 font-Livvic_light">
-                    Rated: 3 out of 100
-                  </p>
-                  <p className="font-Livvic">
-                    Address: <br /> Ring Road 4, Aviation Village
-                  </p>
+            {isLoading || isFetching ? (
+              <Loading />
+            ) : (
+              <div className="flex justify-center items-center">
+                <div className="shadow-xl dark:shadow-xl w-full m-2 h-64 flex dark:bg-offwhite dark:text-black">
+                  <div className="flex overflow-auto snap-mandatory snap-x w-64 ">
+                    {photo.map((pht, i) => (
+                      <div key={i} className="shrink-0">
+                        <img
+                          src={pht}
+                          alt="hotel"
+                          className="w-full h-full"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="p-2">
+                    <h1 className="text-icon text-lg font-roboto_black">
+                      31 Street Broadway Hotel
+                    </h1>
+                    <span className="text-xs mb-2 text-gray-500">
+                      City: Hayes, England, United Kingdom
+                    </span>
+                    <p className="mb-1 text-gray-500 font-Livvic_light">
+                      guestReviews: 5.2 out of 551
+                    </p>
+                    <p className="font-Livvic">
+                      Address: <br /> 38 West 31st Street
+                    </p>
+                    <p className="mb-1 text-gray-500 font-Livvic_light text-sm">
+                      Price: $39
+                    </p>
+                  </div>
                 </div>
               </div>
+            )}
+            <div className="pagination flex gap-3 justify-center items-center">
+              {pagination.map((pagenum, i) => (
+                <div key={i} className="bg-black text-white p-2 cursor-pointer">
+                  <h4 onClick={(e) => setPagenumber(pagenum)}>{pagenum}</h4>
+                </div>
+              ))}
             </div>
-
-            <Loading />
           </section>
 
           <div className="-z-0 bg-desktop_ads bg-cover bg-no-repeat bg-center w-36 sticky top-36 h-96"></div>
