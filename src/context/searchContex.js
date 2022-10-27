@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   city: undefined,
   date: [],
   options: { adult: undefined, children: undefined, room: undefined },
+  cityId: undefined,
 };
 
 export const SearchContex = createContext(INITIAL_STATE);
@@ -28,6 +29,7 @@ const SearchContexProvider = ({ children }) => {
         city: state.city,
         date: state.date,
         options: state.options,
+        cityId: state.cityId,
         dispatch,
       }}
     >

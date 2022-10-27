@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
@@ -19,7 +19,8 @@ export default function Home() {
   const navigate = useNavigate();
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState("lagos");
+  const [cityId, setCityId] = useState("");
   const [date, setDate] = useState([
     {
       startDate: new Date(),
@@ -32,22 +33,6 @@ export default function Home() {
     children: 0,
     room: 1,
   });
-  const search_options = {
-    method: "GET",
-    url: "https://hotels4.p.rapidapi.com/locations/v3/search",
-    params: {
-      q: destination,
-      locale: "en_US",
-      langid: "1033",
-      siteid: "300000001",
-    },
-    headers: {
-      "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
-      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-    },
-  };
-  const { data } = useSearchLocation(search_options);
-  const result = data?.data;
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -58,11 +43,31 @@ export default function Home() {
     });
   };
 
+  const search_options = {
+    method: "GET",
+    url: "https://hotels4.p.rapidapi.com/locations/search",
+    params: { query: destination, locale: "en_US" },
+    headers: {
+      "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+    },
+  };
+  const res = useSearchLocation(search_options);
+  useEffect(() => {
+    // const city_location = res.data;
+    const city_location =
+      res.data?.data?.suggestions[1]?.entities[0]?.destinationId;
+    setCityId(city_location);
+  }, [res]);
+
   const { dispatch } = useContext(SearchContex);
   const handleSearch = () => {
-    dispatch({ type: "NEW_SEARCH", payload: { destination, date, options } });
+    dispatch({
+      type: "NEW_SEARCH",
+      payload: { destination, date, options, cityId },
+    });
     navigate("/hotels", {
-      state: { destination, date, options, result },
+      state: { destination, date, options, cityId },
     });
   };
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);

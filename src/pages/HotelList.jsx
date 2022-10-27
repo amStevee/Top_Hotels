@@ -12,36 +12,38 @@ import { useProperties } from "../hooks/useApiquery";
 
 export default function HotelList() {
   const location = useLocation();
+  console.log(location);
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);
   const [destination, setDestination] = useState(location.state.destination);
   const [options, setOptions] = useState(location.state.options);
   const [date, setDate] = useState(location.state.date);
-  const [result, setResult] = useState(location.state.result);
+  const [cityId, setCityId] = useState(location.state.cityId);
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
   const [rating, setRating] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("");
   const [Pagenumber, setPagenumber] = useState(1);
-  console.log(Pagenumber);
   // //the api may require you to setup the date formart differently ensure to check before proceeding
-  const check_in = `${format(date[0].startDate, "dd/MM/yyyy")} `;
-  const check_out = `${format(date[0].endDate, "dd/MM/yyyy")} `;
+  const check_in = `${format(date[0].startDate, "yyyy-MM-dd")} `;
+  const check_out = `${format(date[0].endDate, "yyyy-MM-dd")} `;
+
+  console.log(check_out);
   console.log(rating, currency, price);
 
   const properties_options = {
     method: "GET",
     url: "https://hotels4.p.rapidapi.com/properties/list",
     params: {
-      destinationId: result?.rid,
+      destinationId: cityId,
       pageNumber: Pagenumber,
       pageSize: "25",
-      checkIn: check_in,
-      checkOut: check_out,
-      adults1: options?.adult,
+      checkIn: "2022-10-26",
+      checkOut: "2022-10-29",
+      adults1: "1",
       sortOrder: "PRICE",
       locale: "en_US",
-      currency: currency,
+      currency: "USD",
     },
     headers: {
       "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
@@ -49,14 +51,12 @@ export default function HotelList() {
     },
   };
 
-  const { data, isLoading, isFetching, refetch } =
-    useProperties(properties_options);
+  const { data } = useProperties(properties_options);
   console.log(data);
 
   const windowWidth = window.innerWidth;
   const refetchLocationList = (e) => {
     e.preventDefault();
-    refetch();
   };
 
   const photo = [
@@ -176,7 +176,7 @@ export default function HotelList() {
 
           <div className="bg-mobile_ads bg-no-repeat bg-contain bg-center h-12 dark:bg-mobile_ads_dark"></div>
 
-          {isLoading || isFetching ? (
+          {toggleDate ? (
             <Loading />
           ) : (
             <div className="shadow-xl dark:shadow-xl m-2 h-40 flex dark:bg-offwhite dark:text-black">
@@ -414,7 +414,7 @@ export default function HotelList() {
               <h6>2821 results</h6>
             </div>
 
-            {isLoading || isFetching ? (
+            {toggleDate ? (
               <Loading />
             ) : (
               <div className="flex justify-center items-center">
