@@ -29,7 +29,7 @@ const SearchContexProvider = ({ children }) => {
         city: state.city,
         date: state.date,
         options: state.options,
-        cityId: state.cityId,
+        cityId: state.options,
         dispatch,
       }}
     >

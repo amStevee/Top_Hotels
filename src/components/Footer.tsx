@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="flex justify-center items-center flex-col p-3 text-white w-full bg-navbar dark:bg-navdark">
       <ul className="flex flex-col justify-center items-center gap-3 mt-3">
         <li>
-          <h1>Support me by following me on my socials</h1>
+          <h1>Support me by following my socials</h1>
         </li>
         <li>
           <Link

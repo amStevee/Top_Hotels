@@ -97,7 +97,7 @@ export default function Navbar({ setDarkMode, darkMode }) {
   const windowWidth = window.innerWidth;
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      setScroll(window.scrollY > 10);
+      setScroll(window.scrollY > 30);
     });
   }, []);
 
