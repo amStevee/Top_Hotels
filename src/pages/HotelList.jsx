@@ -28,7 +28,7 @@ export default function HotelList() {
   const [toggleOptions, setToggleOptions] = useState(false);
   const [scroll, setScroll] = useState(false);
   // const [searchId, setSearchId] = useState([]);
-  const [data, setData] = useState([]);
+  const [hotels, setHotels] = useState([]);
 
   //CALCULATES HOW MANY DAYS
   const MILISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -49,27 +49,26 @@ export default function HotelList() {
   // const check_in = `${format(date[0].startDate, "yyyy-MM-dd")} `;
   // const check_out = `${format(date[0].endDate, "yyyy-MM-dd")} `;
 
-  const search_options = {
-    method: "GET",
-    url: "https://travel-advisor.p.rapidapi.com/locations/search",
-    params: {
-      query: destination,
-      limit: "30",
-      offset: "0",
-      units: "km",
-      location_id: Pagenumber,
-      currency: currency,
-      sort: "relevance",
-      lang: "en_US",
-    },
-    headers: {
-      "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
-      "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
-    },
-  };
-
   const getData = async () => {
     try {
+      const search_options = {
+        method: "GET",
+        url: "https://travel-advisor.p.rapidapi.com/locations/search",
+        params: {
+          query: destination,
+          limit: "30",
+          offset: "0",
+          units: "km",
+          location_id: Pagenumber,
+          currency: currency,
+          sort: "relevance",
+          lang: "en_US",
+        },
+        headers: {
+          "X-RapidAPI-Key": "",
+          "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
+        },
+      };
       await axios.request(search_options).then(async (location_id) => {
         const locationId = location_id?.data.data[0].result_object.location_id;
         const properties_options = {
@@ -89,15 +88,13 @@ export default function HotelList() {
             lang: "en_US",
           },
           headers: {
-            "X-RapidAPI-Key":
-              "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+            "X-RapidAPI-Key": "",
             "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
           },
         };
         const res = await axios.request(properties_options);
 
-        setData(res[0]);
-        console.log(res.data);
+        setHotels(res[0]);
       });
     } catch (error) {
       console.log(error);
@@ -106,8 +103,8 @@ export default function HotelList() {
 
   useEffect(() => {
     getData();
-  }, []);
-  console.log(data);
+  });
+  console.log(hotels);
   // conIdst search = useSearchLocation(search_options);
   // const location_id = search.data?.data.data[0].result_object.location_id;
   // console.log(search.data?.data.data[0].result_object.location_id);
@@ -369,11 +366,11 @@ export default function HotelList() {
             </form>
             {/* <h6>2821 results</h6> */}
           </div>
-          {data === undefined ? (
+          {hotels === undefined ? (
             <Loading />
           ) : (
             <>
-              {data?.map((item, i) => {
+              {hotels?.map((item, i) => {
                 if (windowWidth < 813) {
                   return (
                     <Card
