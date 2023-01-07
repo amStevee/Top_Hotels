@@ -1,4 +1,5 @@
 import React from "react";
+import env from "react-dotenv";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
@@ -9,16 +10,24 @@ import {
   AiFillEnvironment,
   AiOutlineUserAdd,
 } from "react-icons/ai";
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill,
+} from "react-icons/bs";
 import { SearchContex } from "../context/searchContex";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.tsx";
 import { DarkthemeContex } from "../context/Darkmodecontext.tsx";
+import axios from "axios";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [geoid, setGeoid] = useState("");
   const [toggleDate, setToggleDate] = useState(false);
   const [toggleOptions, setToggleOptions] = useState(false);
   const [destination, setDestination] = useState("lagos");
+  const [currency, setCurrency] = useState("USD");
+  const [Pagenumber, setPagenumber] = useState(1);
   const [date, setDate] = useState([
     {
       startDate: new Date(),
@@ -42,13 +51,35 @@ export default function Home() {
   };
 
   const { dispatch } = useContext(SearchContex);
+  const search_options = {
+    method: "GET",
+    url: "https://travel-advisor.p.rapidapi.com/locations/search",
+    params: {
+      query: destination,
+      limit: "30",
+      offset: "0",
+      units: "km",
+      location_id: Pagenumber,
+      currency: currency,
+      sort: "relevance",
+      lang: "en_US",
+    },
+    headers: {
+      "X-RapidAPI-Key": env.REACT_APP_API_KEY,
+      "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
+    },
+  };
+  axios.request(search_options).then(async (location_id) => {
+    const locationId = location_id?.data.data[0].result_object.location_id;
+    setGeoid(locationId);
+  });
   const handleSearch = () => {
     dispatch({
       type: "NEW_SEARCH",
-      payload: { destination, date, options },
+      payload: { destination, date, options, geoid },
     });
     navigate("/hotels", {
-      state: { destination, date, options },
+      state: { destination, date, options, geoid },
     });
   };
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);

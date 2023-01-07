@@ -1,4 +1,5 @@
 import React from "react";
+import env from "react-dotenv";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 // import { AiOutlineSearch } from "react-icons/ai";
@@ -10,7 +11,6 @@ import Footer from "../components/Footer.tsx";
 import Loading from "../reusableComponents/Loading.tsx";
 // import { useProperties, useSearchLocation } from "../hooks/useApiquery";
 import Card from "../reusableComponents/Cardmobile";
-
 import DesktopCard from "../reusableComponents/DesktopCard";
 import axios from "axios";
 
@@ -18,17 +18,21 @@ export default function HotelList() {
   const location = useLocation();
   const { darkMode, setDarkMode } = useContext(DarkthemeContex);
   const [destination, setDestination] = useState(location.state.destination);
+  const [geoid, setGeoid] = useState(location.state.geoid);
   const [options, setOptions] = useState(location.state.options);
   const [toggleDate, setToggleDate] = useState(false);
-  const [rating, setRating] = useState("");
-  const [price, setPrice] = useState("100");
+  const [rating, setRating] = useState("recommended");
+  const [price, setPrice] = useState("desc");
   const [currency, setCurrency] = useState("USD");
-  const [Pagenumber, setPagenumber] = useState(1);
+  // const [Pagenumber, setPagenumber] = useState(1);
   const [date, setDate] = useState(location.state.date);
   const [toggleOptions, setToggleOptions] = useState(false);
-  const [scroll, setScroll] = useState(false);
-  // const [searchId, setSearchId] = useState([]);
   const [hotels, setHotels] = useState([]);
+  const [scroll, setScroll] = useState(false);
+  const filter_optionPrice = ["desc", "asc"];
+  const filter_optionRating = ["recommended", "popularity", "price"];
+  const filter_optionCurrency = ["USD", "NGN", "EUR", "GBP"];
+  const [isLoading, setIsLoading] = useState(true);
 
   //CALCULATES HOW MANY DAYS
   const MILISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -48,104 +52,92 @@ export default function HotelList() {
   // //the api may require you to setup the date formart differently ensure to check before proceeding
   // const check_in = `${format(date[0].startDate, "yyyy-MM-dd")} `;
   // const check_out = `${format(date[0].endDate, "yyyy-MM-dd")} `;
-
-  const getData = async () => {
-    try {
-      const search_options = {
-        method: "GET",
-        url: "https://travel-advisor.p.rapidapi.com/locations/search",
-        params: {
-          query: destination,
-          limit: "30",
-          offset: "0",
-          units: "km",
-          location_id: Pagenumber,
-          currency: currency,
-          sort: "relevance",
-          lang: "en_US",
-        },
-        headers: {
-          "X-RapidAPI-Key": "",
-          "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
-        },
-      };
-      await axios.request(search_options).then(async (location_id) => {
-        const locationId = location_id?.data.data[0].result_object.location_id;
-        const properties_options = {
-          method: "GET",
-          url: "https://travel-advisor.p.rapidapi.com/hotels/list",
-          params: {
-            location_id: locationId,
-            aduIdlts: options.adult,
-            rooms: options.room,
-            nights: days,
-            offset: "0",
-            // pricesmax: price,
-            currency: currency,
-            order: "asc",
-            limit: "30",
-            sort: "recommended",
-            lang: "en_US",
-          },
-          headers: {
-            "X-RapidAPI-Key": "",
-            "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
-          },
-        };
-        const res = await axios.request(properties_options);
-
-        setHotels(res[0]);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  });
-  console.log(hotels);
-  // conIdst search = useSearchLocation(search_options);
-  // const location_id = search.data?.data.data[0].result_object.location_id;
-  // console.log(search.data?.data.data[0].result_object.location_id);
-
-  // const properties_options = {
-  //   method: "GET",
-  //   url: "https://travel-advisor.p.rapidapi.com/hotels/list",
-  //   params: {
-  //     location_id: searchId,
-  //     aduIdlts: options.adult,
-  //     rooms: options.room,
-  //     nights: days,
-  //     offset: "0",
-  //     pricesmax: price,
-  //     currency: currency,
-  //     order: "asc",
-  //     limit: "30",
-  //     sort: "recommended",
-  //     lang: "en_US",
-  //   },
-  //   headers: {
-  //     "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
-  //     "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
-  //   },
+  // const getData = async () => {
+  //   try {
+  //     const search_options = {
+  //       method: "GET",
+  //       url: "https://travel-advisor.p.rapidapi.com/locations/search",
+  //       params: {
+  //         query: destination,
+  //         limit: "30",
+  //         offset: "0",
+  //         units: "km",
+  //         location_id: Pagenumber,
+  //         currency: currency,
+  //         sort: "relevance",
+  //         lang: "en_US",
+  //       },
+  //       headers: {
+  //         "X-RapidAPI-Key":
+  //           "1c11e51c88msh8024a3d32bb02cbp1e2743jsn7b1be5b16da1",
+  //         "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
+  //       },
+  //     };
+  //     await axios.request(search_options).then(async (location_id) => {
+  //       const locationId = location_id?.data.data[0].result_object.location_id;
+  //       const properties_options = {
+  //         method: "GET",
+  //         url: "https://travel-advisor.p.rapidapi.com/hotels/list",
+  //         params: {
+  //           location_id: locationId,
+  //           aduIdlts: options.adult,
+  //           rooms: options.room,
+  //           nights: days,
+  //           offset: "0",
+  //           // pricesmax: price,
+  //           currency: currency,
+  //           order: price,
+  //           limit: "30",
+  //           sort: filter_optionRating,
+  //           lang: "en_US",
+  //         },
+  //         headers: {
+  //  "X-RapidAPI-Key": "8b548f0d36mshb24846c09cc0cfcp1edf30jsn199b6fc034a8",
+  //       "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
+  //         },
+  //       };
+  //       const res = await axios.request(properties_options);
+  //       console.log(res);
+  //       const dt = res.data.data;
+  //       setHotels(dt);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
   // };
-  // const { data, isError, isLoading, success, error, refetch } =
-  //   useProperties(properties_options);
-  // console.log(data?.data);
 
-  // if (isError) {
-  //   console.log(error);
-  // }
+  const properties_options = {
+    method: "GET",
+    url: "https://travel-advisor.p.rapidapi.com/hotels/list",
+    params: {
+      location_id: geoid,
+      aduIdlts: options.adult,
+      rooms: options.room,
+      nights: days,
+      offset: "0",
+      // pricesmax: price,
+      currency: currency,
+      order: price,
+      limit: "30",
+      sort: filter_optionRating,
+      lang: "en_US",
+    },
+    headers: {
+      "X-RapidAPI-Key": env.REACT_APP_API_KEY,
+      "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
+    },
+  };
+  axios.request(properties_options).then((res) => {
+    const dt = res.data.data;
+    setHotels(dt);
+    setIsLoading(false);
+  });
 
-  const windowWidth = window.innerWidth;
+  console.log(hotels);
+  const windowWidth = process.env.REACT_APP_API_KEY;
   const refetchLocationList = (e) => {
     e.preventDefault();
   };
-
-  const filter_optionPrice = ["1000", "700", "600", "400", "300", "120"];
-  const filter_optionRating = ["recommended", "popularity", "price"];
-  const filter_optionCurrency = ["USD", "NGN", "EUR", "GBP"];
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -156,23 +148,23 @@ export default function HotelList() {
     });
   };
 
-  const pagination = [1, 2, 3, 4, 5];
+  // const pagination = [1, 2, 3, 4, 5];
 
   return (
     <div
       className={
         darkMode
-          ? "relative dark transition-all ease-in-out delay-150 bg-dark_bg text-white duration-300 h-screen"
-          : " h-screen"
+          ? "relative dark transition-all ease-in-out delay-150 bg-dark_bg text-white duration-300"
+          : " "
       }
     >
       <Navbar setDarkMode={setDarkMode} darkMode={darkMode} />
-      <div className="flex flex-col md:lg:flex md:lg:flex-row justify-between p-2 m-3">
+      <div className="flex flex-col md:lg:flex md:lg:flex-row justify-between p-2 gap-5 m-4">
         <section className="w-72 lg:flex flex-col gap-4 hidden">
           <form
             className={
               scroll
-                ? "sticky top-28 px-5 py-10 dark:bg-gradient-to-br dark:from-navdark dark:to-navbar flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
+                ? "sticky top-14 px-5 py-10 dark:bg-gradient-to-br dark:from-navdark dark:to-navbar flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
                 : "sticky top-40 px-5 py-10 dark:bg-gradient-to-br dark:from-navdark dark:to-navbar flex flex-col gap-5 justify-center align-middle bg-gradient-to-br from-list_grad_1 to-list_grad_2"
             }
           >
@@ -309,10 +301,10 @@ export default function HotelList() {
         </section>
 
         {windowWidth < 815 && (
-          <div className="bg-mobile_ads bg-no-repeat bg-contain bg-center h-12 dark:bg-mobile_ads_dark"></div>
+          <div className="bg-mobile_ads bg-no-repeat bg-contain bg-center h-12 w-full whitespace-normal dark:bg-mobile_ads_dark"></div>
         )}
 
-        <section className="flex flex-col flex-auto gap-4">
+        <section className="flex flex-col flex-auto gap-4 mt-0">
           <div className=" shadow-sm flex flex-col text-sm items-center gap-1">
             <h6 className="text-navbar dark:text-icon">Filter by:</h6>
             <form className="flex gap-4">
@@ -366,68 +358,70 @@ export default function HotelList() {
             </form>
             {/* <h6>2821 results</h6> */}
           </div>
-          {hotels === undefined ? (
+
+          {!isLoading ? (
             <Loading />
           ) : (
-            <>
-              {hotels?.map((item, i) => {
-                if (windowWidth < 813) {
-                  return (
-                    <Card
-                      pagination={pagination}
-                      setPagenumber={setPagenumber}
-                      toggleDate={toggleDate}
-                      filter_optionCurrency={filter_optionCurrency}
-                      setCurrency={setCurrency}
-                      filter_optionPrice={filter_optionPrice}
-                      setPrice={setPrice}
-                      setRating={setRating}
-                      filter_optionRating={filter_optionRating}
-                      destination={destination}
-                      setDestination={setDestination}
-                      scroll={scroll}
-                      refetchLocationList={refetchLocationList}
-                      handleOption={handleOption}
-                      key={i}
-                      item={item}
-                    />
-                  );
-                } else {
-                  return (
-                    <DesktopCard
-                      pagination={pagination}
-                      setPagenumber={setPagenumber}
-                      toggleDate={toggleDate}
-                      filter_optionCurrency={filter_optionCurrency}
-                      setCurrency={setCurrency}
-                      filter_optionPrice={filter_optionPrice}
-                      setPrice={setPrice}
-                      setRating={setRating}
-                      filter_optionRating={filter_optionRating}
-                      destination={destination}
-                      setDestination={setDestination}
-                      refetchLocationList={refetchLocationList}
-                      handleOption={handleOption}
-                      scroll={scroll}
-                      key={i}
-                      item={item}
-                    />
-                  );
-                }
-              })}
-            </>
+            hotels?.map((item, i) => {
+              if (windowWidth < 813) {
+                return (
+                  <Card
+                    toggleDate={toggleDate}
+                    filter_optionCurrency={filter_optionCurrency}
+                    setCurrency={setCurrency}
+                    filter_optionPrice={filter_optionPrice}
+                    setPrice={setPrice}
+                    setRating={setRating}
+                    filter_optionRating={filter_optionRating}
+                    destination={destination}
+                    setDestination={setDestination}
+                    scroll={scroll}
+                    refetchLocationList={refetchLocationList}
+                    handleOption={handleOption}
+                    key={i}
+                    item={item}
+                  />
+                );
+              } else {
+                return (
+                  <DesktopCard
+                    toggleDate={toggleDate}
+                    filter_optionCurrency={filter_optionCurrency}
+                    setCurrency={setCurrency}
+                    filter_optionPrice={filter_optionPrice}
+                    setPrice={setPrice}
+                    setRating={setRating}
+                    filter_optionRating={filter_optionRating}
+                    destination={destination}
+                    setDestination={setDestination}
+                    refetchLocationList={refetchLocationList}
+                    handleOption={handleOption}
+                    scroll={scroll}
+                    key={i}
+                    item={item}
+                  />
+                );
+              }
+            })
           )}
-          <div className="pagination flex gap-3 justify-center items-center">
+
+          {/* <div className="pagination flex gap-3 justify-center items-center">
             {pagination.map((pagenum, i) => (
               <div key={i} className="bg-black text-white p-2 cursor-pointer">
                 <h4 onClick={(e) => setPagenumber(pagenum)}>{pagenum}</h4>
               </div>
             ))}
-          </div>
+          </div> */}
         </section>
 
         {windowWidth > 815 && (
-          <div className="bg-desktop_ads bg-no-repeat bg-contain bg-center w-64 m-0"></div>
+          <div className=" top-0 w-64 bg-no-repeat bg-contain bg-center m-0 p-0">
+            <img
+              src="../../public/assets/desktop_ads.png"
+              alt="ads."
+              className="w-full h-full"
+            />
+          </div>
         )}
       </div>
       <Footer />
